@@ -5,214 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>学习笔记 - bbcuo</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #333; line-height: 1.6; }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
-            background: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
-        }
+        nav { background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; padding: 0 20px; }
+        nav .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; height: 60px; }
+        nav .logo { font-size: 22px; font-weight: 700; color: #2c3e50; }
+        nav .nav-links a { margin-left: 30px; text-decoration: none; color: #555; font-size: 15px; transition: color 0.3s; }
+        nav .nav-links a:hover, nav .nav-links a.active { color: #3498db; }
 
-        nav {
-            background: #fff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            padding: 0 20px;
-        }
-        nav .nav-inner {
-            max-width: 900px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 60px;
-        }
-        nav .logo {
-            font-size: 22px;
-            font-weight: 700;
-            color: #2c3e50;
-        }
-        nav .nav-links a {
-            margin-left: 30px;
-            text-decoration: none;
-            color: #555;
-            font-size: 15px;
-            transition: color 0.3s;
-        }
-        nav .nav-links a:hover,
-        nav .nav-links a.active {
-            color: #3498db;
-        }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; text-align: center; padding: 40px 20px 35px; }
+        header h1 { font-size: 32px; margin-bottom: 8px; }
+        header p { font-size: 15px; opacity: 0.9; }
 
-        header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
-            text-align: center;
-            padding: 60px 20px 50px;
-        }
-        header h1 {
-            font-size: 36px;
-            margin-bottom: 10px;
-        }
-        header p {
-            font-size: 16px;
-            opacity: 0.9;
-        }
+        .main-layout { display: flex; max-width: 1100px; margin: 0 auto; min-height: calc(100vh - 200px); }
+        .sidebar { width: 250px; background: #fff; border-right: 1px solid #eee; padding: 15px 0; flex-shrink: 0; overflow-y: auto; }
+        .sidebar-title { padding: 12px 20px 6px; font-weight: 700; color: #2c3e50; font-size: 14px; cursor: pointer; user-select: none; display: flex; align-items: center; }
+        .sidebar-title .arrow { font-size: 10px; margin-right: 6px; transition: transform 0.3s; display: inline-block; }
+        .sidebar-title.collapsed .arrow { transform: rotate(-90deg); }
+        .nav-tree { list-style: none; }
+        .nav-tree.collapsed { display: none; }
+        .tree-item { padding: 8px 20px 8px 30px; cursor: pointer; font-size: 14px; color: #555; transition: all 0.2s; user-select: none; display: flex; align-items: center; }
+        .tree-item:hover { background: #f5f7fa; color: #3498db; }
+        .tree-item .arrow { font-size: 10px; margin-right: 6px; transition: transform 0.3s; display: inline-block; }
+        .tree-item.collapsed .arrow { transform: rotate(-90deg); }
+        .sub-tree { list-style: none; }
+        .sub-tree.collapsed { display: none; }
+        .sub-tree a { display: block; padding: 6px 20px 6px 48px; text-decoration: none; font-size: 13px; color: #777; transition: all 0.2s; border-radius: 4px; margin: 1px 8px; }
+        .sub-tree a:hover, .sub-tree a.active { color: #667eea; background: #f0f3ff; }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+        .content-area { flex: 1; padding: 30px 40px; background: #f5f7fa; }
+        .content-panel { display: none; animation: fadeIn 0.3s; }
+        .content-panel.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .content-panel h2 { color: #2c3e50; margin-bottom: 12px; font-size: 22px; }
+        .content-panel .note-desc { background: #fff; border-left: 3px solid #667eea; padding: 12px 16px; border-radius: 0 8px 8px 0; margin-bottom: 18px; color: #555; font-size: 14px; }
+        .content-panel .code-block { background: #fff; border-radius: 10px; margin-bottom: 15px; overflow: hidden; }
+        .content-panel .code-label { font-size: 12px; color: #888; padding: 10px 16px 0; font-weight: 500; }
+        .content-panel pre { background: #2d2d2d; color: #f8f8f2; padding: 16px; overflow-x: auto; font-size: 13px; line-height: 1.7; font-family: "Consolas","Monaco",monospace; margin: 8px 0 0; }
+        .content-panel .btn-link { display: inline-block; margin-top: 10px; padding: 10px 24px; background: #667eea; color: #fff; text-decoration: none; border-radius: 8px; font-size: 14px; transition: background 0.3s; }
+        .content-panel .btn-link:hover { background: #5a6fd6; }
 
-        .category-filter {
-            padding: 30px 0 0;
-            text-align: center;
-        }
-        .category-filter button {
-            margin: 0 6px 8px;
-            padding: 8px 20px;
-            border: 2px solid #667eea;
-            background: #fff;
-            color: #667eea;
-            border-radius: 25px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .category-filter button:hover,
-        .category-filter button.active {
-            background: #667eea;
-            color: #fff;
-        }
+        footer { text-align: center; padding: 30px; color: #aaa; font-size: 13px; }
 
-        section {
-            padding: 40px 0 60px;
-        }
-
-        .note-card {
-            background: #fff;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-            overflow: hidden;
-            transition: box-shadow 0.3s;
-        }
-        .note-card:hover {
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-
-        .note-header {
-            display: flex;
-            align-items: center;
-            padding: 20px 25px;
-            cursor: pointer;
-            user-select: none;
-        }
-        .note-header:hover {
-            background: #fafbfc;
-        }
-        .note-icon {
-            font-size: 28px;
-            margin-right: 15px;
-            flex-shrink: 0;
-        }
-        .note-info {
-            flex: 1;
-        }
-        .note-info h3 {
-            font-size: 17px;
-            color: #2c3e50;
-            margin-bottom: 4px;
-        }
-        .note-info .note-meta {
-            font-size: 13px;
-            color: #999;
-        }
-        .note-arrow {
-            font-size: 14px;
-            color: #bbb;
-            transition: transform 0.3s;
-            flex-shrink: 0;
-        }
-        .note-card.open .note-arrow {
-            transform: rotate(180deg);
-        }
-
-        .note-body {
-            display: none;
-            padding: 0 25px 25px;
-            border-top: 1px solid #f0f0f0;
-        }
-        .note-card.open .note-body {
-            display: block;
-        }
-        .note-body .note-desc {
-            font-size: 14px;
-            color: #555;
-            margin: 20px 0 15px;
-            padding: 12px 16px;
-            background: #f8f9ff;
-            border-left: 3px solid #667eea;
-            border-radius: 0 8px 8px 0;
-        }
-
-        .code-block {
-            margin-bottom: 15px;
-        }
-        .code-block .code-label {
-            font-size: 12px;
-            color: #888;
-            margin-bottom: 6px;
-            font-weight: 500;
-        }
-        .code-block pre {
-            background: #2d2d2d;
-            color: #f8f8f2;
-            border-radius: 10px;
-            padding: 20px;
-            overflow-x: auto;
-            font-size: 14px;
-            line-height: 1.7;
-            font-family: "Fira Code", "Consolas", "Monaco", monospace;
-        }
-        .code-block pre code {
-            font-family: inherit;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: #aaa;
-            font-size: 13px;
-        }
-
-        @media (max-width: 600px) {
-            nav .nav-links a {
-                margin-left: 12px;
-                font-size: 13px;
-            }
-            header h1 {
-                font-size: 26px;
-            }
-            .note-header {
-                padding: 15px 18px;
-            }
-            .note-body {
-                padding: 0 18px 20px;
-            }
-            .code-block pre {
-                font-size: 12px;
-                padding: 15px;
-            }
-        }
+        @media (max-width: 768px) { .main-layout { flex-direction: column; } .sidebar { width: 100%; border-right: none; border-bottom: 1px solid #eee; max-height: 250px; } .content-area { padding: 20px; } }
     </style>
 </head>
 <body>
@@ -232,299 +68,537 @@
     <p>记录学习过程中的知识点、代码片段和心得体会</p>
 </header>
 
-<div class="category-filter">
-    <div class="container">
-        <button class="active" onclick="filterNotes('all')">全部</button>
-        <button onclick="filterNotes('java')">☕ Java</button>
-        <button onclick="filterNotes('web')">🌐 前端</button>
-        <button onclick="filterNotes('tool')">🔧 工具</button>
-        <button onclick="filterNotes('db')">🗄️ 数据库</button>
-    </div>
-</div>
+<div class="main-layout">
 
-<section>
-    <div class="container" id="notesContainer">
+    <aside class="sidebar">
+        <div class="sidebar-title" onclick="toggleTree(this, 'nav-learn')"><span class="arrow">▼</span> 📚 学习</div>
+        <ul class="nav-tree" id="nav-learn">
+            <li>
+                <div class="tree-item" onclick="toggleTree(this, 'sub-java')"><span class="arrow">▼</span> ☕ Java</div>
+                <ul class="sub-tree" id="sub-java">
+                    <li><a href="#" onclick="showContent('java-basic'); return false;">基础语法</a></li>
+                    <li><a href="#" onclick="showContent('java-oop'); return false;">面向对象</a></li>
+                    <li><a href="#" onclick="showContent('java-collection'); return false;">集合框架</a></li>
+                </ul>
+            </li>
+            <li>
+                <div class="tree-item" onclick="toggleTree(this, 'sub-css')"><span class="arrow">▼</span> 🎨 CSS</div>
+                <ul class="sub-tree" id="sub-css">
+                    <li><a href="#" onclick="showContent('css-flexbox'); return false;">Flexbox 布局</a></li>
+                    <li><a href="#" onclick="showContent('css-animation'); return false;">动画与过渡</a></li>
+                    <li><a href="#" onclick="showContent('css-responsive'); return false;">响应式设计</a></li>
+                </ul>
+            </li>
+            <li>
+                <div class="tree-item" onclick="toggleTree(this, 'sub-git')"><span class="arrow">▼</span> 🔧 Git</div>
+                <ul class="sub-tree" id="sub-git">
+                    <li><a href="#" onclick="showContent('git-basic'); return false;">基本命令</a></li>
+                    <li><a href="#" onclick="showContent('git-branch'); return false;">分支管理</a></li>
+                    <li><a href="#" onclick="showContent('git-remote'); return false;">远程协作</a></li>
+                </ul>
+            </li>
+            <li>
+                <div class="tree-item" onclick="toggleTree(this, 'sub-html')"><span class="arrow">▼</span> 🌐 HTML</div>
+                <ul class="sub-tree" id="sub-html">
+                    <li><a href="#" onclick="showContent('html-tags'); return false;">常用标签</a></li>
+                    <li><a href="#" onclick="showContent('html-form'); return false;">表单元素</a></li>
+                    <li><a href="#" onclick="showContent('html-semantic'); return false;">语义化标签</a></li>
+                </ul>
+            </li>
+            <li>
+                <div class="tree-item" onclick="toggleTree(this, 'sub-mysql')"><span class="arrow">▼</span> 🗄️ MySQL</div>
+                <ul class="sub-tree" id="sub-mysql">
+                    <li><a href="#" onclick="showContent('mysql-crud'); return false;">CRUD 操作</a></li>
+                    <li><a href="#" onclick="showContent('mysql-join'); return false;">多表查询</a></li>
+                    <li><a href="#" onclick="showContent('mysql-index'); return false;">索引与优化</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="sidebar-title" onclick="toggleTree(this, 'nav-project')"><span class="arrow">▼</span> 🚀 项目</div>
+        <ul class="nav-tree" id="nav-project">
+            <li>
+                <div class="tree-item" onclick="toggleTree(this, 'sub-library')"><span class="arrow">▼</span> 📦 图书管理系统</div>
+                <ul class="sub-tree" id="sub-library">
+                    <li><a href="#" onclick="showContent('lib-code'); return false;">查看代码</a></li>
+                    <li><a href="#" onclick="showContent('lib-ui'); return false;">查看可视化界面</a></li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
 
-        <div class="note-card" data-category="java">
-            <div class="note-header" onclick="toggleNote(this)">
-                <div class="note-icon">☕</div>
-                <div class="note-info">
-                    <h3>Java 基本数据类型</h3>
-                    <div class="note-meta">Java基础 · 2026-07</div>
-                </div>
-                <div class="note-arrow">▼</div>
-            </div>
-            <div class="note-body">
-                <div class="note-desc">
-                    Java 中有 8 种基本数据类型（primitive types），分为四类：整型、浮点型、字符型和布尔型。
-                </div>
-                <div class="code-block">
-                    <div class="code-label">📄 数据类型定义示例</div>
-                    <pre><code>public class DataTypeDemo {
+    <main class="content-area">
+
+        <div class="content-panel active" id="panel-default">
+            <h2>👈 请从左侧选择一个主题</h2>
+            <p style="color: #888;">点击左侧导航树中的标题来查看对应的学习笔记。</p>
+        </div>
+
+        <!-- ==================== Java ==================== -->
+        <div class="content-panel" id="panel-java-basic">
+            <h2>☕ Java 基础语法</h2>
+            <div class="note-desc">Java 中有 8 种基本数据类型（primitive types），分为四类：整型、浮点型、字符型和布尔型。变量必须先声明后使用，运算符包括算术、关系、逻辑、赋值等。</div>
+            <div class="code-block">
+                <div class="code-label">📄 数据类型与变量</div>
+                <pre><code>public class BasicDemo {
     public static void main(String[] args) {
         // 整型
-        byte b = 127;           // 1字节，-128 ~ 127
-        short s = 32767;        // 2字节
-        int i = 2147483647;   // 4字节（最常用）
-        long l = 9223372036854775807L; // 8字节，注意加 L
+        byte b = 127;              // 1字节，-128 ~ 127
+        short s = 32767;           // 2字节
+        int i = 2147483647;        // 4字节（最常用）
+        long l = 9223372036854775807L; // 8字节，加 L
 
         // 浮点型
-        float f = 3.14f;      // 4字节，注意加 f
-        double d = 3.1415926535; // 8字节（默认）
+        float f = 3.14f;           // 4字节，加 f
+        double d = 3.1415926535;   // 8字节（默认）
 
         // 字符型
-        char c = 'A';          // 2字节，Unicode
+        char c = 'A';              // 2字节，Unicode 编码
 
         // 布尔型
-        boolean flag = true;  // 只有 true/false
+        boolean flag = true;       // 只有 true / false
 
-        System.out.println("int 最大值: " + i);
+        // 自动类型转换：byte → short → int → long → float → double
+        double result = i + d;     // int 自动提升为 double
     }
 }</code></pre>
-                </div>
+            </div>
+            <div class="code-block">
+                <div class="code-label">📄 运算符</div>
+                <pre><code>int a = 10, b = 3;
+System.out.println(a + b);   // 13  加法
+System.out.println(a - b);   // 7   减法
+System.out.println(a * b);   // 30  乘法
+System.out.println(a / b);   // 3   整数除法（取整）
+System.out.println(a % b);   // 1   取余
+
+// 关系运算符：== != > < >= <=
+// 逻辑运算符：&&（与） ||（或） !（非）
+boolean result = (a > 5) && (b < 5);  // true
+
+// 三元运算符
+String msg = (a > b) ? "a 更大" : "b 更大";</code></pre>
             </div>
         </div>
 
-        <div class="note-card" data-category="java">
-            <div class="note-header" onclick="toggleNote(this)">
-                <div class="note-icon">🔄</div>
-                <div class="note-info">
-                    <h3>Java 流程控制语句</h3>
-                    <div class="note-meta">Java基础 · 2026-07</div>
-                </div>
-                <div class="note-arrow">▼</div>
-            </div>
-            <div class="note-body">
-                <div class="note-desc">
-                    Java 流程控制分为：顺序结构、分支结构（if-else, switch）、循环结构（for, while, do-while）。
-                </div>
-                <div class="code-block">
-                    <div class="code-label">📄 if-else 和 switch 示例</div>
-                    <pre><code>int score = 85;
+        <div class="content-panel" id="panel-java-oop">
+            <h2>☕ Java 面向对象</h2>
+            <div class="note-desc">面向对象编程（OOP）的三大特性：<strong>封装</strong>（用 private 隐藏细节）、<strong>继承</strong>（用 extends 复用代码）、<strong>多态</strong>（父类引用指向子类对象）。</div>
+            <div class="code-block">
+                <div class="code-label">📄 封装与继承</div>
+                <pre><code>// 父类
+public class Animal {
+    private String name;          // private：封装，外部不可直接访问
 
-// if-else 分支
-if (score >= 90) {
-    System.out.println("优秀");
-} else if (score >= 80) {
-    System.out.println("良好");
-} else {
-    System.out.println("继续努力");
-}
-
-// switch 分支（JDK 14+ 支持箭头语法）
-String day = "MON";
-switch (day) {
-    case "MON" -> System.out.println("星期一");
-    case "FRI" -> System.out.println("星期五");
-    default  -> System.out.println("其他");
-}</code></pre>
-                </div>
-                <div class="code-block">
-                    <div class="code-label">📄 循环语句示例</div>
-                    <pre><code>// for 循环：打印九九乘法表
-for (int i = 1; i <= 9; i++) {
-    for (int j = 1; j <= i; j++) {
-        System.out.print(j + "×" + i + "=" + (i * j) + "\t");
+    public Animal(String name) {  // 构造方法
+        this.name = name;
     }
-    System.out.println();
+
+    public String getName() {     // getter：提供受控访问
+        return name;
+    }
+
+    public void makeSound() {
+        System.out.println("动物发出声音");
+    }
 }
 
-// while 循环
-int count = 0;
-while (count < 5) {
-    System.out.println("count = " + count);
-    count++;
+// 子类继承父类
+public class Dog extends Animal {
+    public Dog(String name) {
+        super(name);              // 调用父类构造方法
+    }
+
+    @Override                     // 重写父类方法
+    public void makeSound() {
+        System.out.println(getName() + "：汪汪汪！");
+    }
 }</code></pre>
-                </div>
             </div>
-        </div>
-
-        <div class="note-card" data-category="java">
-            <div class="note-header" onclick="toggleNote(this)">
-                <div class="note-icon">📊</div>
-                <div class="note-info">
-                    <h3>Java 数组的定义与使用</h3>
-                    <div class="note-meta">Java基础 · 2026-07</div>
-                </div>
-                <div class="note-arrow">▼</div>
-            </div>
-            <div class="note-body">
-                <div class="note-desc">
-                    数组是存储同类型多个元素的容器。Java 中数组一旦创建，长度不可变。常用操作：遍历、排序、查找。
-                </div>
-                <div class="code-block">
-                    <div class="code-label">📄 数组基本操作</div>
-                    <pre><code>import java.util.Arrays;
-
-public class ArrayDemo {
+            <div class="code-block">
+                <div class="code-label">📄 多态</div>
+                <pre><code>public class Test {
     public static void main(String[] args) {
-        // 数组的三种定义方式
-        int[] arr1 = new int[5];               // 动态初始化
-        int[] arr2 = {1, 2, 3, 4, 5};       // 静态初始化
-        int[] arr3 = new int[]{1, 2, 3};      // 完整写法
+        // 多态：父类引用指向子类对象
+        Animal a1 = new Dog("旺财");
+        Animal a2 = new Cat("咪咪");
 
-        // 遍历数组
-        for (int i = 0; i < arr2.length; i++) {
-            System.out.print(arr2[i] + " ");
+        a1.makeSound();  // 旺财：汪汪汪！
+        a2.makeSound();  // 咪咪：喵喵喵！
+
+        // instanceof 判断实际类型
+        if (a1 instanceof Dog) {
+            Dog d = (Dog) a1;     // 向下转型
         }
-        System.out.println();
-
-        // 增强 for 循环（for-each）
-        for (int num : arr2) {
-            System.out.print(num + " ");
-        }
-
-        // 使用 Arrays 工具类
-        System.out.println(Arrays.toString(arr2));  // [1, 2, 3, 4, 5]
-        Arrays.sort(arr2);                         // 排序
     }
 }</code></pre>
-                </div>
             </div>
         </div>
 
-        <div class="note-card" data-category="web">
-            <div class="note-header" onclick="toggleNote(this)">
-                <div class="note-icon">🌐</div>
-                <div class="note-info">
-                    <h3>HTML 常用标签速查</h3>
-                    <div class="note-meta">前端基础 · 2026-07</div>
-                </div>
-                <div class="note-arrow">▼</div>
+        <div class="content-panel" id="panel-java-collection">
+            <h2>☕ Java 集合框架</h2>
+            <div class="note-desc">Java 集合框架主要分为三大类：<strong>List</strong>（有序可重复）、<strong>Set</strong>（无序不可重复）、<strong>Map</strong>（键值对）。常用实现类：ArrayList、HashSet、HashMap。</div>
+            <div class="code-block">
+                <div class="code-label">📄 ArrayList 与 HashSet</div>
+                <pre><code>import java.util.*;
+
+public class CollectionDemo {
+    public static void main(String[] args) {
+        // ArrayList：有序，可重复，有索引
+        List&lt;String&gt; list = new ArrayList&lt;&gt;();
+        list.add("Java");
+        list.add("Python");
+        list.add("Java");          // 允许重复
+        System.out.println(list);  // [Java, Python, Java]
+        System.out.println(list.get(0)); // Java
+
+        // HashSet：无序，不可重复
+        Set&lt;String&gt; set = new HashSet&lt;&gt;();
+        set.add("Java");
+        set.add("Python");
+        set.add("Java");           // 重复，不会添加
+        System.out.println(set);   // [Java, Python]（顺序不固定）
+    }
+}</code></pre>
             </div>
-            <div class="note-body">
-                <div class="note-desc">
-                    HTML（超文本标记语言）是网页的骨架。掌握常用标签是前端开发的第一步。
-                </div>
-                <div class="code-block">
-                    <div class="code-label">📄 HTML 基本结构</div>
-                    <pre><code>&lt;!DOCTYPE html&gt;
-&lt;html lang="zh-CN"&gt;
-&lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;页面标题&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;h1&gt;一级标题&lt;/h1&gt;
-    &lt;p&gt;这是一个段落。&lt;/p&gt;
-    &lt;a href="https://example.com"&gt; 链接&lt;/a&gt;
-    &lt;img src="image.png" alt="图片"&gt;
-    &lt;ul&gt;
-        &lt;li&gt;列表项1&lt;/li&gt;
-        &lt;li&gt;列表项2&lt;/li&gt;
-    &lt;/ul&gt;
-    &lt;div class="container"&gt;块级容器&lt;/div&gt;
-    &lt;span&gt;行内容器&lt;/span&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-                </div>
+            <div class="code-block">
+                <div class="code-label">📄 HashMap 键值对</div>
+                <pre><code>// HashMap：键值对，键不可重复
+Map&lt;String, Integer&gt; map = new HashMap&lt;&gt;();
+map.put("张三", 90);
+map.put("李四", 85);
+map.put("张三", 95);              // 覆盖旧值
+
+System.out.println(map.get("张三")); // 95
+
+// 遍历 Map
+for (Map.Entry&lt;String, Integer&gt; entry : map.entrySet()) {
+    System.out.println(entry.getKey() + " = " + entry.getValue());
+}</code></pre>
             </div>
         </div>
 
-        <div class="note-card" data-category="web">
-            <div class="note-header" onclick="toggleNote(this)">
-                <div class="note-icon">🎨</div>
-                <div class="note-info">
-                    <h3>CSS 常用样式速查</h3>
-                    <div class="note-meta">前端基础 · 2026-07</div>
-                </div>
-                <div class="note-arrow">▼</div>
-            </div>
-            <div class="note-body">
-                <div class="note-desc">
-                    CSS（层叠样式表）负责网页的外观。Flexbox 和 Grid 是现代布局的核心工具。
-                </div>
-                <div class="code-block">
-                    <div class="code-label">📄 Flexbox 布局示例</div>
-                    <pre><code>/* Flexbox 水平居中布局 */
+        <!-- ==================== CSS ==================== -->
+        <div class="content-panel" id="panel-css-flexbox">
+            <h2>🎨 CSS Flexbox 布局</h2>
+            <div class="note-desc">Flexbox（弹性盒子）是一维布局模型，通过 <code>display: flex</code> 激活。核心属性：<strong>justify-content</strong>（主轴对齐）、<strong>align-items</strong>（交叉轴对齐）、<strong>flex-direction</strong>（方向）。</div>
+            <div class="code-block">
+                <div class="code-label">📄 Flexbox 常用布局</div>
+                <pre><code>/* ===== 容器属性 ===== */
 .container {
     display: flex;
-    justify-content: center;   /* 水平居中 */
-    align-items: center;       /* 垂直居中 */
-    gap: 20px;                 /* 子元素间距 */
+    justify-content: center;      /* 主轴：flex-start | center | flex-end | space-between | space-around */
+    align-items: center;          /* 交叉轴：flex-start | center | flex-end | stretch */
+    flex-direction: row;          /* 方向：row | row-reverse | column | column-reverse */
+    flex-wrap: wrap;              /* 换行：nowrap | wrap */
+    gap: 20px;                    /* 子元素间距 */
 }
 
-/* 卡片样式 */
-.card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-    transition: transform 0.3s;
+/* ===== 子元素属性 ===== */
+.item {
+    flex: 1;                      /* 等分剩余空间 */
+    /* 等价于 flex-grow: 1; flex-shrink: 1; flex-basis: 0; */
 }
 
-.card:hover {
-    transform: translateY(-3px);
+.item:nth-child(2) {
+    flex: 2;                      /* 占 2 份 */
 }</code></pre>
-                </div>
             </div>
         </div>
 
-        <div class="note-card" data-category="tool">
-            <div class="note-header" onclick="toggleNote(this)">
-                <div class="note-icon">🔧</div>
-                <div class="note-info">
-                    <h3>Git 常用命令速查</h3>
-                    <div class="note-meta">工具 · 2026-07</div>
-                </div>
-                <div class="note-arrow">▼</div>
+        <div class="content-panel" id="panel-css-animation">
+            <h2>🎨 CSS 动画与过渡</h2>
+            <div class="note-desc"><strong>transition</strong>（过渡）用于属性值变化时的平滑动画；<strong>animation + @keyframes</strong>（动画）用于更复杂的、可循环的动画效果。</div>
+            <div class="code-block">
+                <div class="code-label">📄 transition 过渡</div>
+                <pre><code>/* transition: 属性 时长 缓动函数 延迟 */
+.button {
+    background: #667eea;
+    transition: background 0.3s ease, transform 0.2s;
+}
+.button:hover {
+    background: #764ba2;
+    transform: scale(1.05);       /* 放大 5% */
+}</code></pre>
             </div>
-            <div class="note-body">
-                <div class="note-desc">
-                    Git 是分布式版本控制系统，掌握这些命令可以高效管理代码版本。
-                </div>
-                <div class="code-block">
-                    <div class="code-label">💻 Git 基本工作流</div>
-                    <pre><code># 初始化仓库
+            <div class="code-block">
+                <div class="code-label">📄 animation + @keyframes</div>
+                <pre><code>/* 定义关键帧 */
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* 使用动画 */
+.card {
+    animation: slideIn 0.5s ease forwards;
+    /* 简写：名称 时长 缓动 次数 方向 填充模式 */
+}
+
+/* 无限旋转 */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+.loader {
+    animation: spin 1s linear infinite;
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="content-panel" id="panel-css-responsive">
+            <h2>🎨 CSS 响应式设计</h2>
+            <div class="note-desc">响应式设计让网页在不同设备上都能良好显示。核心工具：<strong>@media 媒体查询</strong>、<strong>相对单位</strong>（%、vw/vh、rem）、<strong>viewport 元标签</strong>。</div>
+            <div class="code-block">
+                <div class="code-label">📄 @media 媒体查询</div>
+                <pre><code>/* 移动端优先：基础样式针对小屏 */
+.container { padding: 16px; font-size: 14px; }
+
+/* 平板（≥768px） */
+@media (min-width: 768px) {
+    .container { padding: 24px; font-size: 16px; }
+}
+
+/* 桌面端（≥1024px） */
+@media (min-width: 1024px) {
+    .container { max-width: 1100px; margin: 0 auto; }
+}
+
+/* 打印样式 */
+@media print {
+    nav, footer { display: none; }
+}</code></pre>
+            </div>
+            <div class="code-block">
+                <div class="code-label">📄 viewport 与相对单位</div>
+                <pre><code>&lt;!-- head 中必须添加 viewport 元标签 --&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+
+/* 相对单位 */
+.hero { height: 100vh; }         /* 100% 视口高度 */
+.card { width: 90%; }            /* 父元素宽度的 90% */
+.title { font-size: 2rem; }      /* 根元素字体大小的 2 倍 */</code></pre>
+            </div>
+        </div>
+
+        <!-- ==================== Git ==================== -->
+        <div class="content-panel" id="panel-git-basic">
+            <h2>🔧 Git 基本命令</h2>
+            <div class="note-desc">Git 是分布式版本控制系统。基本工作流：<strong>工作区 → 暂存区 → 本地仓库 → 远程仓库</strong>。</div>
+            <div class="code-block">
+                <div class="code-label">💻 Git 基本工作流</div>
+                <pre><code># 初始化仓库
 git init
 
 # 配置用户信息
 git config user.name "bbcuo"
 git config user.email "your-email@example.com"
 
-# 查看状态
+# 查看文件状态
 git status
 
-# 添加文件到暂存区
+# 添加到暂存区
 git add .                    # 添加所有文件
 git add index.html           # 添加指定文件
 
-# 提交
-git commit -m "初始化项目"
+# 提交到本地仓库
+git commit -m "提交信息"
 
 # 查看提交历史
-git log --oneline
+git log --oneline            # 简洁模式
+git log --graph --all        # 图形化分支历史
 
-# 分支操作
-git branch                   # 查看分支
-git branch feature-xxx       # 创建分支
-git checkout feature-xxx     # 切换分支
-git merge feature-xxx        # 合并分支
-
-# 远程仓库
-git remote add origin https://github.com/bbcuo/repo.git
-git push -u origin main      # 推送到远程
-git pull origin main         # 拉取远程更新</code></pre>
-                </div>
+# 撤销操作
+git restore 文件名            # 撤销工作区修改
+git reset HEAD 文件名         # 取消暂存
+git reset --soft HEAD~1      # 撤销最近一次 commit（保留修改）</code></pre>
             </div>
         </div>
 
-        <div class="note-card" data-category="db">
-            <div class="note-header" onclick="toggleNote(this)">
-                <div class="note-icon">🗄️</div>
-                <div class="note-info">
-                    <h3>MySQL 基础 SQL 语句</h3>
-                    <div class="note-meta">数据库 · 2026-07</div>
-                </div>
-                <div class="note-arrow">▼</div>
+        <div class="content-panel" id="panel-git-branch">
+            <h2>🔧 Git 分支管理</h2>
+            <div class="note-desc">分支是 Git 的核心功能，允许并行开发互不干扰。常用操作：<strong>创建分支、切换分支、合并分支、解决冲突</strong>。</div>
+            <div class="code-block">
+                <div class="code-label">💻 分支操作</div>
+                <pre><code># 查看分支
+git branch                   # 本地分支
+git branch -a                # 所有分支（含远程）
+
+# 创建与切换分支
+git branch feature-login     # 创建分支
+git checkout feature-login   # 切换分支
+git checkout -b feature-pay  # 创建并切换（一步到位）
+
+# 合并分支
+git checkout main            # 先切回目标分支
+git merge feature-login      # 合并
+
+# 删除分支
+git branch -d feature-login  # 删除已合并的分支
+git branch -D feature-login  # 强制删除
+
+# 变基（保持提交历史线性）
+git rebase main              # 把当前分支变基到 main</code></pre>
             </div>
-            <div class="note-body">
-                <div class="note-desc">
-                    SQL（结构化查询语言）是操作关系型数据库的标准语言。CRUD 是最基本的四种操作。
-                </div>
-                <div class="code-block">
-                    <div class="code-label">💻 CRUD 基本操作</div>
-                    <pre><code>-- 创建数据库
+        </div>
+
+        <div class="content-panel" id="panel-git-remote">
+            <h2>🔧 Git 远程协作</h2>
+            <div class="note-desc">远程仓库用于团队协作和代码备份。核心操作：<strong>clone、push、pull、fetch</strong>。常用平台：GitHub、Gitee、GitLab。</div>
+            <div class="code-block">
+                <div class="code-label">💻 远程仓库操作</div>
+                <pre><code># 克隆远程仓库
+git clone https://github.com/bbcuo/lab.git
+
+# 关联远程仓库
+git remote add origin https://github.com/bbcuo/lab.git
+git remote -v                # 查看远程地址
+
+# 推送
+git push -u origin main      # 首次推送（关联上游）
+git push                     # 之后直接推送
+
+# 拉取
+git pull origin main         # 拉取并合并（fetch + merge）
+git fetch origin             # 只拉取，不合并
+
+# 解决冲突
+# 当 pull 出现冲突时：
+# 1. 手动编辑冲突文件
+# 2. git add .
+# 3. git commit -m "解决冲突"
+# 4. git push</code></pre>
+            </div>
+        </div>
+
+        <!-- ==================== HTML ==================== -->
+        <div class="content-panel" id="panel-html-tags">
+            <h2>🌐 HTML 常用标签</h2>
+            <div class="note-desc">HTML（超文本标记语言）是网页的骨架。标签分为<strong>块级元素</strong>（独占一行，如 div、h1、p）和<strong>行内元素</strong>（不换行，如 span、a、img）。</div>
+            <div class="code-block">
+                <div class="code-label">📄 HTML 基本结构</div>
+                <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;页面标题&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- 标题：h1 到 h6，h1 最重要 --&gt;
+    &lt;h1&gt;一级标题&lt;/h1&gt;
+    &lt;h2&gt;二级标题&lt;/h2&gt;
+
+    &lt;!-- 段落与文本 --&gt;
+    &lt;p&gt;这是一个段落。&lt;strong&gt;加粗&lt;/strong&gt; &lt;em&gt;斜体&lt;/em&gt;&lt;/p&gt;
+
+    &lt;!-- 链接与图片 --&gt;
+    &lt;a href="https://example.com" target="_blank"&gt;新窗口打开链接&lt;/a&gt;
+    &lt;img src="image.png" alt="图片描述" width="200"&gt;
+
+    &lt;!-- 列表 --&gt;
+    &lt;ul&gt;
+        &lt;li&gt;无序列表项 1&lt;/li&gt;
+        &lt;li&gt;无序列表项 2&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;ol&gt;
+        &lt;li&gt;有序列表项 1&lt;/li&gt;
+        &lt;li&gt;有序列表项 2&lt;/li&gt;
+    &lt;/ol&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            </div>
+        </div>
+
+        <div class="content-panel" id="panel-html-form">
+            <h2>🌐 HTML 表单元素</h2>
+            <div class="note-desc">表单用于收集用户输入。核心标签：<strong>&lt;form&gt;</strong>、<strong>&lt;input&gt;</strong>（多种 type）、<strong>&lt;select&gt;</strong>、<strong>&lt;textarea&gt;</strong>、<strong>&lt;button&gt;</strong>。</div>
+            <div class="code-block">
+                <div class="code-label">📄 常用表单</div>
+                <pre><code>&lt;form action="/submit" method="post"&gt;
+    &lt;!-- 文本输入 --&gt;
+    &lt;label&gt;用户名：&lt;/label&gt;
+    &lt;input type="text" name="username" placeholder="请输入用户名" required&gt;
+
+    &lt;!-- 密码 --&gt;
+    &lt;label&gt;密码：&lt;/label&gt;
+    &lt;input type="password" name="password" minlength="6"&gt;
+
+    &lt;!-- 单选框 --&gt;
+    &lt;label&gt;&lt;input type="radio" name="gender" value="male"&gt; 男&lt;/label&gt;
+    &lt;label&gt;&lt;input type="radio" name="gender" value="female"&gt; 女&lt;/label&gt;
+
+    &lt;!-- 复选框 --&gt;
+    &lt;label&gt;&lt;input type="checkbox" name="hobby" value="code"&gt; 编程&lt;/label&gt;
+    &lt;label&gt;&lt;input type="checkbox" name="hobby" value="sport"&gt; 运动&lt;/label&gt;
+
+    &lt;!-- 下拉选择 --&gt;
+    &lt;select name="city"&gt;
+        &lt;option value=""&gt;请选择城市&lt;/option&gt;
+        &lt;option value="beijing"&gt;北京&lt;/option&gt;
+        &lt;option value="shanghai"&gt;上海&lt;/option&gt;
+    &lt;/select&gt;
+
+    &lt;!-- 多行文本 --&gt;
+    &lt;textarea name="intro" rows="4" placeholder="请输入简介"&gt;&lt;/textarea&gt;
+
+    &lt;!-- 按钮 --&gt;
+    &lt;button type="submit"&gt;提交&lt;/button&gt;
+    &lt;button type="reset"&gt;重置&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+            </div>
+        </div>
+
+        <div class="content-panel" id="panel-html-semantic">
+            <h2>🌐 HTML 语义化标签</h2>
+            <div class="note-desc">语义化标签让页面结构更清晰，有利于 SEO 和可访问性。HTML5 新增了 <strong>&lt;header&gt;、&lt;nav&gt;、&lt;main&gt;、&lt;section&gt;、&lt;article&gt;、&lt;aside&gt;、&lt;footer&gt;</strong> 等。</div>
+            <div class="code-block">
+                <div class="code-label">📄 语义化页面结构</div>
+                <pre><code>&lt;body&gt;
+    &lt;header&gt;        &lt;!-- 页头：logo、导航 --&gt;
+        &lt;nav&gt;       &lt;!-- 导航链接 --&gt;
+            &lt;a href="/"&gt;首页&lt;/a&gt;
+            &lt;a href="/about"&gt;关于&lt;/a&gt;
+        &lt;/nav&gt;
+    &lt;/header&gt;
+
+    &lt;main&gt;          &lt;!-- 主体内容（页面唯一） --&gt;
+        &lt;article&gt;   &lt;!-- 独立文章 --&gt;
+            &lt;h1&gt;文章标题&lt;/h1&gt;
+            &lt;p&gt;文章内容...&lt;/p&gt;
+        &lt;/article&gt;
+
+        &lt;aside&gt;     &lt;!-- 侧边栏 --&gt;
+            &lt;h3&gt;相关推荐&lt;/h3&gt;
+        &lt;/aside&gt;
+    &lt;/main&gt;
+
+    &lt;footer&gt;        &lt;!-- 页脚：版权、链接 --&gt;
+        &lt;p&gt;© 2026 bbcuo&lt;/p&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;</code></pre>
+            </div>
+            <div class="code-block">
+                <div class="code-label">📄 语义化 vs 非语义化对比</div>
+                <pre><code>&lt;!-- ❌ 非语义化：全是 div --&gt;
+&lt;div class="header"&gt;...&lt;/div&gt;
+&lt;div class="nav"&gt;...&lt;/div&gt;
+&lt;div class="main"&gt;...&lt;/div&gt;
+&lt;div class="footer"&gt;...&lt;/div&gt;
+
+&lt;!-- ✅ 语义化：标签即含义 --&gt;
+&lt;header&gt;...&lt;/header&gt;
+&lt;nav&gt;...&lt;/nav&gt;
+&lt;main&gt;...&lt;/main&gt;
+&lt;footer&gt;...&lt;/footer&gt;</code></pre>
+            </div>
+        </div>
+
+        <!-- ==================== MySQL ==================== -->
+        <div class="content-panel" id="panel-mysql-crud">
+            <h2>🗄️ MySQL CRUD 操作</h2>
+            <div class="note-desc">CRUD 是数据库四种基本操作：<strong>Create</strong>（INSERT）、<strong>Read</strong>（SELECT）、<strong>Update</strong>（UPDATE）、<strong>Delete</strong>（DELETE）。</div>
+            <div class="code-block">
+                <div class="code-label">💻 CRUD 基本操作</div>
+                <pre><code>-- 创建数据库
 CREATE DATABASE mydb;
 USE mydb;
 
@@ -536,53 +610,171 @@ CREATE TABLE student (
     score DECIMAL(5, 2)
 );
 
--- 插入数据 (Create)
+-- Create：插入数据
 INSERT INTO student (name, age, score)
 VALUES ('张三', 20, 88.5),
        ('李四', 21, 92.0);
 
--- 查询数据 (Read)
+-- Read：查询数据
 SELECT * FROM student;
 SELECT name, score FROM student WHERE score > 90;
 SELECT * FROM student ORDER BY score DESC;
+SELECT COUNT(*), AVG(score) FROM student;  -- 聚合函数
+SELECT * FROM student LIMIT 5 OFFSET 0;    -- 分页
 
--- 更新数据 (Update)
+-- Update：更新数据
 UPDATE student SET score = 95 WHERE name = '张三';
 
--- 删除数据 (Delete)
+-- Delete：删除数据
 DELETE FROM student WHERE id = 1;</code></pre>
-                </div>
             </div>
         </div>
-               <!--可以在这里添加新的学习笔记等等-->
-    </div>
-</section>
+
+        <div class="content-panel" id="panel-mysql-join">
+            <h2>🗄️ MySQL 多表查询</h2>
+            <div class="note-desc">多表查询通过 <strong>JOIN</strong> 连接多个表。常用类型：<strong>INNER JOIN</strong>（取交集）、<strong>LEFT JOIN</strong>（左表全保留）、<strong>RIGHT JOIN</strong>（右表全保留）。</div>
+            <div class="code-block">
+                <div class="code-label">💻 JOIN 多表查询</div>
+                <pre><code>-- 学生表
+CREATE TABLE student (id INT PRIMARY KEY, name VARCHAR(20), class_id INT);
+-- 班级表
+CREATE TABLE class (id INT PRIMARY KEY, class_name VARCHAR(20));
+
+INSERT INTO student VALUES (1, '张三', 1), (2, '李四', 2), (3, '王五', NULL);
+INSERT INTO class VALUES (1, '一班'), (2, '二班');
+
+-- INNER JOIN：只返回匹配的行
+SELECT s.name, c.class_name
+FROM student s
+INNER JOIN class c ON s.class_id = c.id;
+-- 结果：张三 | 一班，李四 | 二班（王五没有班级，不出现）
+
+-- LEFT JOIN：左表全部保留
+SELECT s.name, c.class_name
+FROM student s
+LEFT JOIN class c ON s.class_id = c.id;
+-- 结果：张三 | 一班，李四 | 二班，王五 | NULL</code></pre>
+            </div>
+        </div>
+
+        <div class="content-panel" id="panel-mysql-index">
+            <h2>🗄️ MySQL 索引与优化</h2>
+            <div class="note-desc">索引就像书的目录，能大幅提升查询速度。但索引也会占用空间并降低写入速度。常用：<strong>普通索引</strong>、<strong>唯一索引</strong>、<strong>复合索引</strong>。</div>
+            <div class="code-block">
+                <div class="code-label">💻 索引操作</div>
+                <pre><code>-- 创建索引
+CREATE INDEX idx_name ON student(name);           -- 普通索引
+CREATE UNIQUE INDEX idx_email ON user(email);     -- 唯一索引
+CREATE INDEX idx_name_age ON student(name, age);  -- 复合索引
+
+-- 查看索引
+SHOW INDEX FROM student;
+
+-- 删除索引
+DROP INDEX idx_name ON student;
+
+-- 查看执行计划（判断是否使用索引）
+EXPLAIN SELECT * FROM student WHERE name = '张三';
+-- key 列：NULL 表示未使用索引，有值表示使用了索引</code></pre>
+            </div>
+            <div class="code-block">
+                <div class="code-label">📄 索引优化原则</div>
+                <pre><code>-- ✅ 适合建索引的场景
+-- 1. WHERE 子句经常使用的列
+-- 2. ORDER BY 排序的列
+-- 3. JOIN 关联的列
+
+-- ❌ 不适合建索引的场景
+-- 1. 表数据量很小
+-- 2. 频繁更新的列
+-- 3. 区分度低的列（如性别：男/女）
+
+-- 最左前缀原则（复合索引）
+-- 索引 (name, age) 可以用在：
+-- WHERE name = '张三'              ✅
+-- WHERE name = '张三' AND age = 20 ✅
+-- WHERE age = 20                   ❌ 跳过了最左列</code></pre>
+            </div>
+        </div>
+
+        <!-- ==================== 项目 ==================== -->
+        <div class="content-panel" id="panel-lib-code">
+            <h2>📦 图书管理系统 - 查看代码</h2>
+            <div class="note-desc">
+                图书管理系统是一个基于 Java 的控制台应用，使用面向对象编程思想实现。
+                功能包括：图书添加、删除、查询、借阅、归还等。
+                代码托管在 GitHub，点击下方按钮查看完整源码。
+            </div>
+            <a class="btn-link" href="https://github.com/bbcuo/library-management-system" target="_blank">
+                🔗 在 GitHub 查看完整代码 →
+            </a>
+            <div class="code-block" style="margin-top: 20px;">
+                <div class="code-label">📄 项目结构预览</div>
+                <pre><code>library-management-system/
+├── src/
+│   ├── Book.java          # 图书实体类
+│   ├── BookManager.java   # 图书管理（增删改查）
+│   ├── User.java          # 用户实体类
+│   └── Main.java          # 主程序入口
+└── README.md</code></pre>
+            </div>
+        </div>
+
+        <div class="content-panel" id="panel-lib-ui">
+            <h2>📦 图书管理系统 - 可视化界面</h2>
+            <div class="note-desc">
+                以下是图书管理系统的功能界面预览。当前为控制台版本，运行后在命令行中操作。
+                后续可扩展为 Web 版本，使用 HTML + CSS + JavaScript 构建前端界面。
+            </div>
+            <div class="code-block">
+                <div class="code-label">🖥️ 控制台运行效果</div>
+                <pre><code>========== 图书管理系统 ==========
+1. 添加图书
+2. 删除图书
+3. 查询图书
+4. 借阅图书
+5. 归还图书
+6. 显示所有图书
+0. 退出系统
+==================================
+请输入操作编号：1
+
+--- 添加图书 ---
+请输入书名：Java编程思想
+请输入作者：Bruce Eckel
+请输入ISBN：978-7-111-12345
+✅ 图书添加成功！
+
+==================================
+请输入操作编号：6
+
+--- 所有图书 ---
+编号  书名            作者           ISBN              状态
+1     Java编程思想     Bruce Eckel   978-7-111-12345   可借阅</code></pre>
+            </div>
+            <a class="btn-link" href="https://github.com/bbcuo/library-management-system" target="_blank">
+                🔗 查看完整代码 →
+            </a>
+        </div>
+
+    </main>
+</div>
 
 <footer>
     <p>© 2026 bbcuo | 📒 学无止境，每天进步一点点</p>
 </footer>
 
 <script>
-    function toggleNote(header) {
-        const card = header.parentElement;
-        card.classList.toggle('open');
+    function toggleTree(el, targetId) {
+        el.classList.toggle('collapsed');
+        document.getElementById(targetId).classList.toggle('collapsed');
     }
 
-    function filterNotes(category, e) {
-        const buttons = document.querySelectorAll('.category-filter button');
-        buttons.forEach(function(btn) {
-            btn.classList.remove('active');
-        });
-        e.target.classList.add('active');
-
-        const cards = document.querySelectorAll('.note-card');
-        cards.forEach(function(card) {
-            if (category === 'all' || card.dataset.category === category) {
-                card.style.display = '';
-            } else {
-                card.style.display = 'none';
-            }
-        });
+    function showContent(panelId) {
+        document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.sub-tree a').forEach(a => a.classList.remove('active'));
+        const panel = document.getElementById('panel-' + panelId);
+        if (panel) panel.classList.add('active');
     }
 </script>
 
